@@ -7,9 +7,20 @@
 
 #include "targetver.h"
 
-#include <stdio.h>
 #include <tchar.h>
+#include <iostream>
+#include <cstring>
+#include <ctime>
+#include <string>
+#include <vector>
+#include <winsock2.h>
+#include <io.h>
+#include <thread>
+#include <sstream>
+#include <queue>
+#include "constants.h"
+#include "http.h"
 
-
+using namespace std;
 
 // TODO: 在此处引用程序需要的其他头文件
