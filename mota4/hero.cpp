@@ -90,6 +90,7 @@ bool c_hero::moveComplete()
 		case 14:
 			consts.book=true;
 			consts.setMsg(L"获得怪物手册。\n你可以将鼠标放置在怪物上查看怪物\n的基本信息。\n注意倒数第二行括号外为当前伤害，\n括号内为+1防减伤；最后一行为临界\n值和临界减伤。");
+			consts.upload();
 			break;
 		case 15:yellowkey++;
 			break;
@@ -353,6 +354,7 @@ void c_hero::beat(c_monster* monster)
 	if (now_floor==5 && id==15)
 	{
 		map_floor[now_floor].getinfo(3,6)->openSpecial();
+		consts.upload();
 	}
 
 	consts.lasttime=clock();

@@ -144,9 +144,9 @@ void showMessage(const wchar_t *_s) // 显示提示
 }
 void showMax(const wchar_t *s)
 {
-	consts.s_bg->RenderStretch(16+consts.ScreenLeft, consts.map_height*32-400, consts.map_width*32+consts.ScreenLeft-16, consts.map_height*32-8);
+	consts.s_bg->RenderStretch(16+consts.ScreenLeft, consts.map_height*32-350, consts.map_width*32+consts.ScreenLeft-16, consts.map_height*32-8);
 	GfxFont *f=new GfxFont(L"楷体", 22);
-	f->Print(16+consts.ScreenLeft+8, consts.map_height*32-400+8, L"%s", s);
+	f->Print(16+consts.ScreenLeft+8, consts.map_height*32-350+8, L"%s", s);
 	delete f;
 }
 void init()
@@ -487,12 +487,12 @@ bool frameFunc()
 	}
 
 	if (consts.msg==consts.MESSAGE_RANK) {
-		if(consts.hge->Input_GetKeyState(HGEK_DOWN) && consts.currentmax>0 && clock()-consts.lasttime>100)
+		if(consts.hge->Input_GetKeyState(HGEK_DOWN) && consts.currentmax>0 && clock()-consts.lasttime>180)
 		{
-			consts.nowcnt++; if (consts.nowcnt>4) consts.nowcnt=4;
+			consts.nowcnt++; if (consts.nowcnt>3) consts.nowcnt=3;
 			consts.lasttime=clock();
 		}
-		if(consts.hge->Input_GetKeyState(HGEK_UP) && consts.currentmax>0 && clock()-consts.lasttime>100)
+		if(consts.hge->Input_GetKeyState(HGEK_UP) && consts.currentmax>0 && clock()-consts.lasttime>180)
 		{
 			consts.nowcnt--; if (consts.nowcnt<0) consts.nowcnt=0;
 			consts.lasttime=clock();
@@ -627,8 +627,7 @@ bool renderFunc()
 	case consts.MESSAGE_WIN:
 		{
 			wchar_t ss[200];
-			wsprintf(ss, L"恭喜通关%s！您的分数是 %d。\n", 
-				consts.ending==1?L"NE":consts.ending==2?L"GE":consts.ending==3?L"TE":L"", hero.getHP());
+			wsprintf(ss, L"恭喜通关！您的分数是 %d。\n", hero.getHP());
 
 			// uploading...
 			if (consts.currentmax==0) {
@@ -682,12 +681,15 @@ bool renderFunc()
 			wchar_t ss[200], tmp[200], tmp2[200];
 			char timestr[200];
 			time_t st=consts.savetime;
-			strftime(timestr, sizeof(timestr), "%Y-%m-%d %H:%M:%S", localtime(&st));
+			tm t;
+			localtime_s(&t, &st);
+			strftime(timestr, sizeof(timestr), "%Y-%m-%d %H:%M:%S", &t);
 			size_t outsize;
 			mbstowcs_s(&outsize, tmp2, 200, timestr, 200);
 
 			st=time(NULL);
-			strftime(timestr, sizeof(timestr), "%Y-%m-%d %H:%M:%S", localtime(&st));
+			localtime_s(&t, &st);
+			strftime(timestr, sizeof(timestr), "%Y-%m-%d %H:%M:%S", &t);
 			mbstowcs_s(&outsize, tmp, 200, timestr, 200);
 
 			wsprintf(ss, L"你要读取自动存档吗？\n当前时间：%s\n存档时间：%s\n\n[ENTER] 确认读取\n[ESC]取消", tmp, tmp2);
@@ -717,34 +719,25 @@ bool renderFunc()
 				if (consts.nowcnt==0) {
 					wsprintf(ss, L"当前已有%d人次尝试，%d人次通关。\n\n", consts.tmp[0], consts.tmp[1]);
 					wchar_t tmp[100];
-					for (int i=1;i<=4;i++) {
-						int j=i%4+1;
-						wsprintf(tmp, L"%s难度：%d人次尝试。\n", consts.getHardText(j), consts.tmp[5*j-3]);
+					for (int i=1;i<=3;i++) {
+						wsprintf(tmp, L"%s：%d人次尝试，%d人次通关。\n", consts.getHardText(i), consts.tmp[2*i], consts.tmp[2*i+1]);
 						wcscat_s(ss, tmp);
-						wsprintf(tmp, L"NE/GE:(%d, %d)  TE:(%d, %d)\n", consts.tmp[5*j-2], consts.tmp[5*j-1], consts.tmp[5*j], consts.tmp[5*j+1]);
+						record* r=&consts.rd[i-1][0];
+						wsprintf(tmp, L"MAX: [%d, %d, %d, %d]\n", r->hp, r->atk, r->def, r->mdef);
 						wcscat_s(ss, tmp);
 					}
-					wcscat_s(ss, L"备注：\n(x, y)代表通关人次x，当前MAX为y；\n“人次”按游戏开始时间进行计算。\n");
+					wcscat_s(ss, L"\n备注：“人次”以拿到怪物手册进行\n计算。每次拿到手册，人次+1。\n");
 					wcscat_s(ss, L"\n[↑][↓] 详细数据   [ENTER] 确定");
 					showMax(ss);
 				}
 
 				else {
-					int j=consts.nowcnt%4+1;
-					wsprintf(ss, L"%s难度下MAX数据：\n", consts.getHardText(j));
+					wsprintf(ss, L"%s难度下MAX数据：\n", consts.getHardText(consts.nowcnt));
 
-					wcscat_s(ss, L"NE/GE：\n");
-					for (int i=0; i<5; i++) {
-						record* r=&consts.rd[2*j-2][i];
+					for (int i=0; i<10; i++) {
+						record* r=&consts.rd[consts.nowcnt-1][i];
 						wchar_t tmp[100];
-						wsprintf(tmp, L"TOP%d: [%d, %d, %d, %d, %d, %d]\n", i+1, r->hp, r->atk, r->def, r->money, r->yellow, r->blue);
-						wcscat_s(ss, tmp);
-					}
-					wcscat_s(ss, L"TE：\n");
-					for (int i=0; i<5; i++) {
-						record* r=&consts.rd[2*j-1][i];
-						wchar_t tmp[100];
-						wsprintf(tmp, L"TOP%d: [%d, %d, %d, %d, %d, %d]\n", i+1, r->hp, r->atk, r->def, r->money, r->yellow, r->blue);
+						wsprintf(tmp, L"TOP%d: [%d, %d, %d, %d]\n", i+1, r->hp, r->atk, r->def, r->mdef);
 						wcscat_s(ss, tmp);
 					}
 

@@ -20,7 +20,7 @@ constants::constants()
 	shouldUpload=true;
 	wanttosave=0;
 	lastload=-1000;
-	shouldUpload=false;
+	// shouldUpload=false;
 }
 
 void constants::init()
@@ -300,7 +300,7 @@ void constants::doUpload()
 {
 	char url[200];
 	// 开始时间、难度、当前层数、生命、攻击、防御、魔防、金钱、黄钥匙、蓝钥匙、游戏时间、总时间、步数、结局
-	sprintf_s(url, "/service/mota/mota3.php?action=upload&starttime=%ld&hard=%d&floor=%d&hp=%d&atk=%d&def=%d&mdef=%d&money=%d&yellow=%d&blue=%d&playtime=%.3f&totaltime=%.3f&step=%d&ending=%d",
+	sprintf_s(url, "/service/mota/mota4.php?action=upload&starttime=%ld&hard=%d&floor=%d&hp=%d&atk=%d&def=%d&mdef=%d&money=%d&yellow=%d&blue=%d&playtime=%.3f&totaltime=%.3f&step=%d&ending=%d",
 		starttime, hard, hero.getNowFloor(), hero.getHP(), hero.getAtk(), hero.getDef(), hero.getMDef(), hero.getMoney(), hero.yellow(), hero.blue(), playtime, totaltime, step, ending);
 
 	char s[50000];
@@ -353,7 +353,7 @@ void constants::doUploadAll(int delay)
 		Sleep(delay);
 	char url[200];
 	// 开始时间、难度、当前层数、生命、攻击、防御、魔防、金钱、黄钥匙、蓝钥匙、游戏时间、总时间、步数、结局
-	sprintf_s(url, "/service/mota/mota3.php?action=upload&starttime=%ld&hard=%d&floor=%d&hp=%d&atk=%d&def=%d&mdef=%d&money=%d&yellow=%d&blue=%d&playtime=%.3f&totaltime=%.3f&step=%d&ending=%d",
+	sprintf_s(url, "/service/mota/mota4.php?action=upload&starttime=%ld&hard=%d&floor=%d&hp=%d&atk=%d&def=%d&mdef=%d&money=%d&yellow=%d&blue=%d&playtime=%.3f&totaltime=%.3f&step=%d&ending=%d",
 		starttime, hard, hero.getNowFloor(), hero.getHP(), hero.getAtk(), hero.getDef(), hero.getMDef(), hero.getMoney(), hero.yellow(), hero.blue(), playtime, totaltime, step, ending);
 
 	char s[50000];
@@ -391,8 +391,8 @@ void constants::getRank()
 {
 	msg=MESSAGE_RANK;
 	currentmax=0;
-	for (int x=0;x<8;x++)
-		for (int i=0; i<5; i++)
+	for (int x=0;x<3;x++)
+		for (int i=0; i<10; i++)
 			rd[x][i].init();
 	nowcnt=0;
 	thread t2(&constants::doGetRank, this);
@@ -401,21 +401,21 @@ void constants::getRank()
 
 void constants::doGetRank()
 {
-	char* output=http.get(http.server, http.port, "/service/mota/mota3.php?action=top", NULL);
+	char* output=http.get(http.server, http.port, "/service/mota/mota4.php?action=top", NULL);
 	if (output!=NULL) {
 
 		string text(output);
 		stringstream stream;
 		stream << text;
 
-		// 首先存放22个数据
-		for (int i=0;i<22;i++)
+		// 首先存放8个数据
+		for (int i=0;i<8;i++)
 			stream >> tmp[i];
 
-		for (int x=0;x<8;x++) {
+		for (int x=0;x<3;x++) {
 			stream >> currentmax;
 			for (int i=0; i<currentmax; i++) {
-				stream >> rd[x][i].hp >> rd[x][i].atk >> rd[x][i].def >> rd[x][i].money >> rd[x][i].yellow >> rd[x][i].blue;
+				stream >> rd[x][i].hp >> rd[x][i].atk >> rd[x][i].def >> rd[x][i].mdef;
 			}
 		}
 		delete output;

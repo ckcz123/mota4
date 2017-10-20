@@ -11,8 +11,8 @@ struct savedata
 
 struct record
 {
-	int hp, atk, def, money, yellow, blue;
-	void init() {hp=atk=def=money=yellow=blue=0;}
+	int hp, atk, def, mdef;
+	void init() {hp=atk=def=mdef=0;}
 };
 
 class constants
@@ -80,7 +80,7 @@ public:
 	// 排名信息
 	wchar_t rank[20];
 	int currentmax;
-	record rd[8][5];
+	record rd[3][10];
 	int tmp[50];
 
 	// 正在打开的门
