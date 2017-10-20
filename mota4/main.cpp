@@ -826,7 +826,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int)
 	consts.hge->System_SetState(HGE_FRAMEFUNC,frameFunc);
 	consts.hge->System_SetState(HGE_RENDERFUNC,renderFunc);
 	consts.hge->System_SetState(HGE_USESOUND,true);
-	consts.hge->System_SetState(HGE_TITLE,"还没取好名字的塔 By 艾之葵");
+	consts.hge->System_SetState(HGE_TITLE,"20层的试炼 By 艾之葵");
 	consts.hge->System_SetState(HGE_WINDOWED,true);
 	consts.hge->System_SetState(HGE_HIDEMOUSE,false);
 	consts.hge->System_SetState(HGE_SCREENHEIGHT,32*consts.map_height);
