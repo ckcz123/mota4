@@ -369,10 +369,10 @@ void c_hero::npc(int select)
 	{
 	case 41:
 		{
-			int need=20+2*npctime;
+			int need=20+2*npctime, hpadd=100+5*npctime;
 			if (money<need) break;
 			money-=need;
-			if (select==1) hp+=100;
+			if (select==1) hp+=hpadd;
 			if (select==2) atk+=2;
 			if (select==3) def+=2;
 			if (select==4) mdef+=5;
@@ -382,6 +382,15 @@ void c_hero::npc(int select)
 	case 43:
 		{
 			consts.setMsg(L"游戏提示\t本塔快捷键说明：\n\nS/L: 存/读档\nK: 读取自动存档\nP: 查看当前MAX\nZ: 转向\nR: 重新开始\n-: 开启/关闭地图显伤\nM: 音乐开关");
+			break;
+		}
+	case 44:
+		{
+			const wchar_t* ss[50]={
+				L"游戏提示\t本塔共两个商店，分别在3F和12F。\n两个商店是类似于新新魔塔的关系。\n商店出售生命值的大小会随着购买次\n数而依次递增。",
+				L"游戏提示\t另外，困难难度下全塔可以不用购买\n任何一次生命通关，你能做到吗？"
+			};
+			consts.setMsg(ss);
 			break;
 		}
 	
