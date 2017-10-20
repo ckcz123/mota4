@@ -35,6 +35,7 @@ void constants::init()
 	msg=MESSAGE_START;
 	starttime=0;
 	ending=0;
+	savetime=0;
 	for (int i=0;i<1000;i++) sd[i].hp=0;
 }
 void constants::loadResources()
@@ -110,6 +111,7 @@ void constants::loadResources()
 	s_shield3=new hgeSprite(ht_icon,96,128,32,32);
 	s_wand=new hgeSprite(ht_special,224,800,32,32);
 	s_critical=new hgeSprite(ht_icon2,0,192,32,32);
+	s_hint=new hgeSprite(ht_icon2,96,160,32,32);
 	//special
 	s_sigh=new hgeSprite(ht_special,192,800,32,32);
 	s_sighed=new hgeSprite(ht_special,192,832,32,32);

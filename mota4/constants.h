@@ -30,6 +30,7 @@ public:
 	static const int MESSAGE_CHOOSE_HARD = 11;
 	static const int MESSAGE_TEXT = 12;
 	static const int MESSAGE_RANK = 13;
+	static const int MESSAGE_AUTOLOAD = 14;
 
 	constants();
 	void init();
@@ -56,7 +57,7 @@ public:
 	vector<wstring> hint;
 	int nowcnt;
 	long lasttime;
-	long starttime;
+	long starttime, savetime;
 
 	float playtime, lefttime, totaltime;
 	int step;
@@ -100,7 +101,7 @@ public:
 
 	//¸÷ÖÖÍ¼¿é
 	hgeSprite *s_ground,*s_wall,*s_wall2,*s_wall3,*s_wall_hidden,*s_water,*s_sky,*s_lightning,*s_barrier,*s_bg,*s_bg_font;
-	hgeSprite *s_redjewel,*s_bluejewel,*s_greenjewel,*s_redkey,*s_bluekey,*s_yellowkey,*s_allkey,*s_critical;
+	hgeSprite *s_redjewel,*s_bluejewel,*s_greenjewel,*s_redkey,*s_bluekey,*s_yellowkey,*s_allkey,*s_critical,*s_hint;
 	hgeSprite *s_redpotion,*s_bluepotion,*s_yellowpotion, *s_greenpotion, *s_coin,*s_fly,*s_cross,*s_floor,*s_stick,*s_drink,*s_wand;
 	hgeSprite *s_sword1,*s_shield1,*s_sword2,*s_shield2,*s_sword3,*s_shield3;
 	hgeSprite *s_enemyinfo, *s_level, *s_storey, *s_heart, *s_expr, *s_damage, *s_time, *s_step;

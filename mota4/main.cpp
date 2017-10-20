@@ -55,6 +55,40 @@ void save(int id)
 	consts.lastload=-1000;
 	consts.setMsg(L"存档成功！");
 }
+void autosave()
+{
+	FILE *savefile;
+	fopen_s(&savefile,"Save/autosave.dat","w");
+	consts.save(savefile);
+	for(int i=0;i<consts.map_floornum/2;i++)map_floor[i].save(savefile);
+	hero.save(savefile);
+	for (int i=consts.map_floornum/2;i<consts.map_floornum;i++)map_floor[i].save(savefile);
+	fclose(savefile);
+	//consts.setMsg(L"存档成功！");
+}
+void autoload()
+{
+	if (consts.hard!=0)
+		consts.uploadAll();
+	FILE *loadfile;
+	int err=fopen_s(&loadfile,"Save/autosave.dat","r");
+	if (err!=0)
+	{
+		consts.setMsg(L"自动存档读取失败！");
+		return;
+	}
+	consts.load(loadfile);
+	for(int i=0;i<consts.nowcnt/2;i++)map_floor[i].load(loadfile);
+	hero.load(loadfile);
+	for(int i=consts.nowcnt/2;i<consts.nowcnt;i++)map_floor[i].load(loadfile);
+	if (consts.map_floornum<consts.nowcnt)
+		consts.map_floornum=consts.nowcnt;
+	consts.nowcnt=0;
+	fclose(loadfile);
+	consts.uploadAll(1500);
+	consts.lastload=-1000;
+	consts.setMsg(L"自动存档读取成功！");
+}
 void load(int id)
 {
 	if (consts.hard!=0)
@@ -153,6 +187,9 @@ bool frameFunc()
 		loadsave();
 		consts.msg=consts.MESSAGE_LOAD;
 	}
+	if(consts.hge->Input_GetKeyState(HGEK_K) && consts.isFree()) {
+		consts.msg=consts.MESSAGE_AUTOLOAD;
+	}
 	/*
 	if(consts.isFree() && consts.hge->Input_GetKeyState(HGEK_C) && consts.fly>0 && clock()-consts.lasttime>250) {
 		if (!hero.canCenterFly()) {
@@ -203,24 +240,24 @@ bool frameFunc()
 	if (consts.msg==consts.MESSAGE_CHOOSE_HARD) {
 		if (consts.hge->Input_GetKeyState(HGEK_1) && clock()-consts.lasttime>200) {
 			consts.hard=1;
-			//consts.msg=consts.MESSAGE_TEXT;
+			consts.msg=consts.MESSAGE_TEXT;
 			consts.nowcnt=0;
 			consts.starttime=time(NULL);
-			consts.msg=consts.MESSAGE_NONE;
+			//consts.msg=consts.MESSAGE_NONE;
 		}
 		else if (consts.hge->Input_GetKeyState(HGEK_2) && clock()-consts.lasttime>200) {
 			consts.hard=2;
-			// consts.msg=consts.MESSAGE_TEXT;
+			consts.msg=consts.MESSAGE_TEXT;
 			consts.nowcnt=0;
 			consts.starttime=time(NULL);
-			consts.msg=consts.MESSAGE_NONE;
+			//consts.msg=consts.MESSAGE_NONE;
 		}
 		else if (consts.hge->Input_GetKeyState(HGEK_3) && clock()-consts.lasttime>200) {
 			consts.hard=3;
-			//consts.msg=consts.MESSAGE_TEXT;
+			consts.msg=consts.MESSAGE_TEXT;
 			consts.nowcnt=0;
 			consts.starttime=time(NULL);
-			consts.msg=consts.MESSAGE_NONE;
+			//consts.msg=consts.MESSAGE_NONE;
 
 		}
 	}
@@ -229,8 +266,8 @@ bool frameFunc()
 			consts.nowcnt++;
 			consts.lasttime=clock();
 		}
-		if (consts.nowcnt==10) {
-			consts.setMsg(L"勇士\t就是这里了，冲进去!");
+		if (consts.nowcnt==6) {
+			consts.setMsg(L"勇士\t加油，我一定能闯过这座塔的！");
 			consts.nowcnt=0;
 		}
 	}
@@ -314,6 +351,15 @@ bool frameFunc()
 		else if(consts.hge->Input_GetKeyState(HGEK_ENTER)) {
 			if (consts.sd[consts.wanttosave].hp>=0)
 				load(consts.wanttosave);
+		}
+	}
+	if (consts.msg==consts.MESSAGE_AUTOLOAD)
+	{
+		if (consts.hge->Input_GetKeyState(HGEK_ENTER)) {
+			autoload();
+		}
+		else if (consts.hge->Input_GetKeyState(HGEK_ESCAPE)) {
+			consts.msg=consts.MESSAGE_NONE;
 		}
 	}
 
@@ -464,6 +510,12 @@ bool frameFunc()
 	if ((consts.msg==consts.MESSAGE_FLYING || consts.msg==consts.MESSAGE_NPC) && consts.hge->Input_GetKeyState(HGEK_ENTER))
 		consts.msg=consts.MESSAGE_NONE;
 
+	// 自动存档
+	if (consts.isFree() && time(NULL)-consts.savetime>30) {
+		autosave();
+		consts.savetime=time(NULL);
+	}
+
 	consts.goOn(&hero, &map_floor[hero.getNowFloor()], dt);
 	return false;
 }
@@ -482,9 +534,10 @@ bool renderFunc()
 		f->Print(left, height+64, L"[3] 退出游戏");
 		delete f;
 		f=new GfxFont(L"楷体", 40);
-		f->SetColor(0xFFFF0000);
-		len=f->GetTextSize(L"重生塔").cx;
-		f->Print(16*consts.map_width+consts.ScreenLeft-len/2, height*0.4, L"重生塔");
+		//f->SetColor(0xFFFF0000);
+		f->SetColor(0xFF1C86EE);
+		len=f->GetTextSize(L"20层的试炼").cx;
+		f->Print(16*consts.map_width+consts.ScreenLeft-len/2, height*0.4, L"20层的试炼");
 		delete f;
 		consts.hge->Gfx_EndScene();
 		return false;
@@ -508,16 +561,12 @@ bool renderFunc()
 	}
 	if (consts.msg==consts.MESSAGE_TEXT) {
 		wchar_t* msg[50]={
-			L"对青叶帝国而言，3358年原本应该和\n往常一样平静。",
-			L"但是，出现在边境上的异次元之门却\n给帝国带来了大麻烦。\n有源源不断的怪物从门中出现，并企\n图侵入帝国的领土。",
-			L"幸运的是，怪物们智力低下，且并不\n强悍，很容易被斩杀，因此虽然怪物\n数量不少，却仍是帝国占据着上风。",
-			L"直到那一天...",
-			L"那一天，有一座塔突然出现在了防线\n另一侧，而谁也不知道它是怎么出现\n的，就好像突然冒出在了那里。",
-			L"而自从塔出现后，战局陡然发生了变\n化。怪物们竟然拥有了不死之身！",
-			L"无论帝国的武士们用什么方法斩杀了\n怪物，一转头却又会发现怪物好端端\n就在那里，只有自己身上的血迹才能\n证明这场战斗确实发生过。",
-			L"毫无疑问，正是这座塔的出现，才导\n致怪物们拥有了不死之身的能力。\n因此，帝国决定派遣勇敢的武士，想\n办法绕过防线，偷入塔中，一定要找\n到这座塔的秘密。",
-			L"然而，进去的人却再也没有回来。\n而你，作为第1127个勇士，勇敢地接\n受了使命，想办法闯入了这座塔。",
-			L"我们的故事，也就这样开始了......"
+			L"（上接《重生塔》剧情）\n（没玩过《重生塔》的人可以先去玩一玩）\n（https://tieba.baidu.com/p/5356252626）",
+			L"在那位勇士奋不顾死的努力之下，重生之塔\n塔顶的水晶被取走，这座塔也彻底倒塌。\n\n战场上怪物们的重生能力也消失了，帝国的\n勇士们冲到异次元大门前，彻底将其关闭。",
+			L"然而，虽然青叶帝国在这场战斗中取得了最\n终的胜利，但却付出了无比巨大的代价。\n尤其是高端战力，更是伤亡惨重。",
+			L"另一方面，有那么多人闯入了重生之塔，却\n只有一个人险之又险地获胜，也从另一个方\n面说明了武士们个人战斗能力的缺失。",
+			L"为了锻炼武士们的作战能力，国王下令，在\n原重生塔的遗迹上重新修建了一座20层高的\n塔，并将战斗中俘获的一些来自异次元的怪\n物放入塔中，以供大家挑战自我。",
+			L"并且，只有完全通过了这个20层试炼塔的武\n士，才能被承认并得到晋升的机会。\n\n而你，作为一名虽然平凡而普通却又胸怀大\n志的武士，毅然决然开始了自己的挑战。"
 		};
 
 		GfxFont *f=new GfxFont(L"楷体", 24);
@@ -625,6 +674,23 @@ bool renderFunc()
 				wsprintf(ss,L"读取存档 %d\n(%s/F%d/HP%d/A%d/D%d)\n\n[↑][↓][←][→] 更改读档位置\n[ENTER] 确认读档\n[ESC] 取消",
 				consts.wanttosave+1, consts.getHardText(sd->hard), hero.getDisplayFloor(sd->now_floor), sd->hp,
 				sd->atk, sd->def);
+			showMessage(ss);
+			break;
+		}
+	case consts.MESSAGE_AUTOLOAD:
+		{
+			wchar_t ss[200], tmp[200], tmp2[200];
+			char timestr[200];
+			time_t st=consts.savetime;
+			strftime(timestr, sizeof(timestr), "%Y-%m-%d %H:%M:%S", localtime(&st));
+			size_t outsize;
+			mbstowcs_s(&outsize, tmp2, 200, timestr, 200);
+
+			st=time(NULL);
+			strftime(timestr, sizeof(timestr), "%Y-%m-%d %H:%M:%S", localtime(&st));
+			mbstowcs_s(&outsize, tmp, 200, timestr, 200);
+
+			wsprintf(ss, L"你要读取自动存档吗？\n当前时间：%s\n存档时间：%s\n\n[ENTER] 确认读取\n[ESC]取消", tmp, tmp2);
 			showMessage(ss);
 			break;
 		}

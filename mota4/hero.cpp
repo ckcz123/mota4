@@ -257,11 +257,7 @@ bool c_hero::canBeat(c_monster* monster) // 判断能否打败
 }
 int c_hero::getDamage(c_monster* monster) // 打败怪物，返回hp
 {
-	int damage=getDamage(atk,def,mdef,monster->getHp(),monster->getAtk(),monster->getDef(),monster->getSpecial());
-	if (damage>=MAX_DAMAGE) return damage;
-	if (consts.hard==1) damage*=0.9;
-	if (consts.hard==2) damage*=0.96;
-	return damage;
+	return getDamage(atk,def,mdef,monster->getHp(),monster->getAtk(),monster->getDef(),monster->getSpecial());
 }
 int c_hero::getDamage(int hero_atk, int hero_def, int hero_mdef,
 					  int mon_hp, int mon_atk, int mon_def, int mon_special)
@@ -297,11 +293,10 @@ int c_hero::getDamage(int hero_atk, int hero_def, int hero_mdef,
 	int ans=damage+(mon_hp-1)/(hero_atk-mon_def)*per_damage;
 	ans -= hero_mdef;
 
-	// 魔防回血
-	// return ans;
-
-	// 魔防不回血
-	return ans<=0?0:ans;
+	if (ans<=0) ans=0;
+	if (consts.hard==1) ans=(int)(ans*0.92);
+	if (consts.hard==2) ans=(int)(ans*0.96);
+	return ans;
 }
 int c_hero::getCritical(int m_hp, int m_atk, int m_def, int m_spe)
 {
@@ -380,6 +375,11 @@ void c_hero::npc(int select)
 			if (select==3) def+=2;
 			if (select==4) mdef+=5;
 			map_npc->visitNpc();
+			break;
+		}
+	case 43:
+		{
+			consts.setMsg(L"游戏提示\t本塔快捷键说明：\n\nS/L: 存/读档\nK: 读取自动存档\nP: 查看当前MAX\nZ: 转向\nR: 重新开始\n-: 开启/关闭地图显伤\nM: 音乐开关");
 			break;
 		}
 	

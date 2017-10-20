@@ -12,7 +12,7 @@ void c_map_npc::init(int t)
 		for(int i=0;i<4;i++) npc[i]=new hgeSprite(consts.ht_npc,32*i,192,32,32);
 	}
 	else {
-		for(int i=0;i<4;i++) npc[i]=new hgeSprite(consts.ht_npc,32*i,0,32,32);
+		for(int i=0;i<4;i++) npc[i]=consts.s_hint;
 	}
 }
 void c_map_npc::show(int i,int j)
