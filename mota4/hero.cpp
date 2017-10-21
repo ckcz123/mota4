@@ -98,13 +98,13 @@ bool c_hero::moveComplete()
 			break;
 		case 17:redkey++;
 			break;
-		case 18:hp+=50+50*level;
+		case 18:hp+=100;
 			break;
-		case 19:hp+=125+125*level;
+		case 19:hp+=250;
 			break;
-		case 20:
+		case 20:hp+=500;
 			break;
-		case 21:
+		case 21:hp+=800;
 			break;
 		case 22:
 			atk+=10;
@@ -119,12 +119,12 @@ bool c_hero::moveComplete()
 			consts.setMsg(L"获得楼层飞行器。\n\n[G]键使用。");
 			break;
 		case 26:
-			def+=20;
-			consts.setMsg(L"获得银盾，防御力+20。");
+			atk+=20;
+			consts.setMsg(L"获得银剑，攻击+20。");
 			break;
 		case 27:
-			consts.canfly=true;
-			consts.setMsg(L"获得楼层飞行器。\n你可以飞往任意比当前层数低的楼层\n，或比当前层数高且存在通路可达的\n楼层。\n[G]键使用。");
+			def+=20;
+			consts.setMsg(L"获得银盾，防御+20。");
 			break;
 		case 31:
 			atk+=40;
@@ -356,6 +356,19 @@ void c_hero::beat(c_monster* monster)
 		map_floor[now_floor].getinfo(3,6)->openSpecial();
 		consts.upload();
 	}
+	if (now_floor==8 && id==18 && !map_floor[now_floor].getinfo(7,9)->hasMonster() && !map_floor[now_floor].getinfo(7,11)->hasMonster())
+	{
+		map_floor[now_floor].getinfo(8,10)->openSpecial();
+	}
+	if (now_floor==9 && id==19 && !map_floor[now_floor].getinfo(1,3)->hasMonster() && !map_floor[now_floor].getinfo(3,3)->hasMonster())
+	{
+		map_floor[now_floor].getinfo(2,2)->openSpecial();
+	}
+	if (now_floor==10 && id==8)
+	{
+		map_floor[now_floor].getinfo(3,6)->openSpecial();
+		consts.upload();
+	}
 
 	consts.lasttime=clock();
 }
@@ -393,7 +406,9 @@ void c_hero::npc(int select)
 			consts.setMsg(ss);
 			break;
 		}
-	
+	case 45:
+		consts.setMsg(L"游戏提示\t注意蓝钥匙的转换，这是本区域的难\n点所在。");
+		break;	
 	default:
 		consts.setMsg(L"勇士\t这是啥？");
 		break;
