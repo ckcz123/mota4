@@ -190,6 +190,16 @@ bool frameFunc()
 	if(consts.hge->Input_GetKeyState(HGEK_K) && consts.isFree()) {
 		consts.msg=consts.MESSAGE_AUTOLOAD;
 	}
+	if(consts.hge->Input_GetKeyState(HGEK_U) && consts.isFree()) {
+		// 3F商店
+		consts.map_npc=map_floor[3].getinfo(1,10)->getNpc();
+		if (consts.map_npc->getVisit()==0) {
+			consts.map_npc=NULL;
+		}
+		else consts.msg=consts.MESSAGE_SHOP;
+
+
+	}
 	/*
 	if(consts.isFree() && consts.hge->Input_GetKeyState(HGEK_C) && consts.fly>0 && clock()-consts.lasttime>250) {
 		if (!hero.canCenterFly()) {
@@ -399,6 +409,29 @@ bool frameFunc()
 		if(consts.hge->Input_GetKeyState(HGEK_ENTER))
 		{
 			hero.fly();
+			consts.msg=consts.MESSAGE_NONE;
+		}
+	}
+
+	if (consts.msg==consts.MESSAGE_SHOP) {
+		if(consts.hge->Input_GetKeyState(HGEK_1) && clock()-consts.lasttime>200) {
+			hero.shop(1); 
+			consts.lasttime=clock();
+		}
+		else if(consts.hge->Input_GetKeyState(HGEK_2) && clock()-consts.lasttime>200) {
+			hero.shop(2); 
+			consts.lasttime=clock();
+		}
+		else if(consts.hge->Input_GetKeyState(HGEK_3) && clock()-consts.lasttime>200) {
+			hero.shop(3); 
+			consts.lasttime=clock();
+		}
+		else if(consts.hge->Input_GetKeyState(HGEK_4) && clock()-consts.lasttime>200) {
+			hero.shop(4); 
+			consts.lasttime=clock();
+		}
+		else if (consts.hge->Input_GetKeyState(HGEK_ENTER) || consts.hge->Input_GetKeyState(HGEK_ESCAPE)) {
+			consts.map_npc=NULL;
 			consts.msg=consts.MESSAGE_NONE;
 		}
 	}
@@ -750,6 +783,17 @@ bool renderFunc()
 		}
 	default:
 		break;
+	}
+	// 商店
+	if (consts.msg==consts.MESSAGE_SHOP) {
+		int id=consts.map_npc->getId(), times=consts.map_npc->getVisit();
+		// 6楼商店
+		if (id==41) {
+			int need=20+2*times, hpadd=100+5*times;
+			wchar_t s[200];
+			wsprintf(s, L"贪婪之神\t勇敢的武士啊，给我%d金币就可以：\n\n[1] 生命+%d\n[2] 攻击+2\n[3] 防御+2\n[4] 魔防+5\n[ESC] 离开", need, hpadd);
+			showMessage(s);
+		}
 	}
 	if (consts.msg==consts.MESSAGE_NPC) {
 		c_map_npc* npc=map_floor[hero.getNowFloor()].getinfo(hero.nextY(),hero.nextX())->getNpc();

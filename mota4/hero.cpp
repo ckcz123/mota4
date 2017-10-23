@@ -372,6 +372,23 @@ void c_hero::beat(c_monster* monster)
 
 	consts.lasttime=clock();
 }
+void c_hero::shop(int select)
+{
+	int npcid=consts.map_npc->getId();
+	int npctime=consts.map_npc->getVisit();
+	if (npcid==41) {
+		int need=20+2*npctime, hpadd=100+5*npctime;
+		if (money<need) return;
+		money-=need;
+		if (select==1) hp+=hpadd;
+		if (select==2) atk+=2;
+		if (select==3) def+=2;
+		if (select==4) mdef+=5;
+		consts.map_npc->visitNpc();
+		return;
+	}
+
+}
 void c_hero::npc(int select)
 {
 	c_map_npc* map_npc=map_floor[now_floor].getinfo(nextY(),nextX())->getNpc();
@@ -400,7 +417,7 @@ void c_hero::npc(int select)
 	case 44:
 		{
 			const wchar_t* ss[50]={
-				L"游戏提示\t本塔共两个商店，分别在3F和12F。\n两个商店是类似于新新魔塔的关系。\n商店出售生命值的大小会随着购买次\n数而依次递增。",
+				L"游戏提示\t本塔共两个商店，分别在3F和12F。\n商店出售生命值的大小会随着购买次\n数而依次递增。\n\n本商店按U键可快捷使用。",
 				L"游戏提示\t另外，困难难度下全塔可以不用购买\n任何一次生命通关，你能做到吗？"
 			};
 			consts.setMsg(ss);

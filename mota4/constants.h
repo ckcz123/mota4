@@ -31,6 +31,7 @@ public:
 	static const int MESSAGE_TEXT = 12;
 	static const int MESSAGE_RANK = 13;
 	static const int MESSAGE_AUTOLOAD = 14;
+	static const int MESSAGE_SHOP = 15;
 
 	constants();
 	void init();

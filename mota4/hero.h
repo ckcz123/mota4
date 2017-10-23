@@ -30,6 +30,7 @@ public:
 	int getDefDamage(int m_hp, int m_atk, int m_def, int m_spe);
 	void beat(c_monster*);
 	void npc(int select=0);//Ñ¡Ôñselect
+	void shop(int select=0);
 	void save(FILE*);//´æµµ
 	char* toString();
 	void load(FILE*);//¶Áµµ
