@@ -20,7 +20,7 @@ constants::constants()
 	shouldUpload=true;
 	wanttosave=0;
 	lastload=-1000;
-	// shouldUpload=false;
+	shouldUpload=false;
 }
 
 void constants::init()
@@ -353,7 +353,7 @@ void constants::doUploadAll(int delay)
 		Sleep(delay);
 	char url[200];
 	// 开始时间、难度、当前层数、生命、攻击、防御、魔防、金钱、黄钥匙、蓝钥匙、游戏时间、总时间、步数、结局
-	sprintf_s(url, "/service/mota/mota4.php?action=upload&starttime=%ld&hard=%d&floor=%d&hp=%d&atk=%d&def=%d&mdef=%d&money=%d&yellow=%d&blue=%d&playtime=%.3f&totaltime=%.3f&step=%d&ending=%d",
+	sprintf_s(url, "/service/mota/mota4.php?action=uploadall&starttime=%ld&hard=%d&floor=%d&hp=%d&atk=%d&def=%d&mdef=%d&money=%d&yellow=%d&blue=%d&playtime=%.3f&totaltime=%.3f&step=%d&ending=%d",
 		starttime, hard, hero.getNowFloor(), hero.getHP(), hero.getAtk(), hero.getDef(), hero.getMDef(), hero.getMoney(), hero.yellow(), hero.blue(), playtime, totaltime, step, ending);
 
 	char s[50000];
