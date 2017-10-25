@@ -369,6 +369,18 @@ void c_hero::beat(c_monster* monster)
 		map_floor[now_floor].getinfo(3,6)->openSpecial();
 		consts.upload();
 	}
+	if (now_floor==12 && id==22 && !map_floor[now_floor].getinfo(8,9)->hasMonster() && !map_floor[now_floor].getinfo(8,11)->hasMonster())
+	{
+		map_floor[now_floor].getinfo(7,10)->openSpecial();
+	}
+	if (now_floor==12 && id==7 && !map_floor[now_floor].getinfo(6,9)->hasMonster() && !map_floor[now_floor].getinfo(6,11)->hasMonster())
+	{
+		map_floor[now_floor].getinfo(5,10)->openSpecial();
+	}
+	if (now_floor==12 && id==16 && !map_floor[now_floor].getinfo(4,9)->hasMonster() && !map_floor[now_floor].getinfo(4,11)->hasMonster())
+	{
+		map_floor[now_floor].getinfo(3,10)->openSpecial();
+	}
 
 	consts.lasttime=clock();
 }
@@ -409,6 +421,18 @@ void c_hero::npc(int select)
 			map_npc->visitNpc();
 			break;
 		}
+	case 42:
+		{
+			int need=40+4*npctime, hpadd=200+10*npctime;
+			if (money<need) break;
+			money-=need;
+			if (select==1) hp+=hpadd;
+			if (select==2) atk+=4;
+			if (select==3) def+=4;
+			if (select==4) mdef+=10;
+			map_npc->visitNpc();
+			break;
+		}
 	case 43:
 		{
 			consts.setMsg(L"游戏提示\t本塔快捷键说明：\n\nS/L: 存/读档\nK: 读取自动存档\nP: 查看当前MAX\nZ: 转向\nR: 重新开始\n-: 开启/关闭地图显伤\nM: 音乐开关");
@@ -417,7 +441,7 @@ void c_hero::npc(int select)
 	case 44:
 		{
 			const wchar_t* ss[50]={
-				L"游戏提示\t本塔共两个商店，分别在3F和12F。\n商店出售生命值的大小会随着购买次\n数而依次递增。\n\n本商店按U键可快捷使用。",
+				L"游戏提示\t本塔共两个商店，分别在3F和12F。\n商店出售生命值的大小会随着购买次\n数而依次递增。\n\n本商店按[U]键可快捷使用。",
 				L"游戏提示\t另外，困难难度下全塔可以不用购买\n任何一次生命通关，你能做到吗？"
 			};
 			consts.setMsg(ss);
@@ -425,7 +449,10 @@ void c_hero::npc(int select)
 		}
 	case 45:
 		consts.setMsg(L"游戏提示\t注意蓝钥匙的转换，这是本区域的难\n点所在。");
-		break;	
+		break;
+	case 46:
+		consts.setMsg(L"游戏提示\t本区域怪物伤害较高，请尽快开启12\n楼的商店。\n\n该商店按[I]键可快捷使用。");
+		break;
 	default:
 		consts.setMsg(L"勇士\t这是啥？");
 		break;

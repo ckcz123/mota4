@@ -197,8 +197,14 @@ bool frameFunc()
 			consts.map_npc=NULL;
 		}
 		else consts.msg=consts.MESSAGE_SHOP;
-
-
+	}
+	if(consts.hge->Input_GetKeyState(HGEK_I) && consts.isFree()) {
+		// 3F商店
+		consts.map_npc=map_floor[12].getinfo(1,10)->getNpc();
+		if (consts.map_npc->getVisit()==0) {
+			consts.map_npc=NULL;
+		}
+		else consts.msg=consts.MESSAGE_SHOP;
 	}
 	/*
 	if(consts.isFree() && consts.hge->Input_GetKeyState(HGEK_C) && consts.fly>0 && clock()-consts.lasttime>250) {
@@ -451,7 +457,7 @@ bool frameFunc()
 		}
 
 		// 商店
-		else if (npcid==41 || npcid==50) {
+		else if (npcid==41 || npcid==42) {
 			if(consts.hge->Input_GetKeyState(HGEK_1) && clock()-consts.lasttime>200) {
 				hero.npc(1);
 			}
@@ -794,16 +800,28 @@ bool renderFunc()
 			wsprintf(s, L"贪婪之神\t勇敢的武士啊，给我%d金币就可以：\n\n[1] 生命+%d\n[2] 攻击+2\n[3] 防御+2\n[4] 魔防+5\n[ESC] 离开", need, hpadd);
 			showMessage(s);
 		}
+		if (id==42) {
+			int need=40+4*times, hpadd=200+10*times;
+			wchar_t s[200];
+			wsprintf(s, L"贪婪之神\t勇敢的武士啊，给我%d金币就可以：\n\n[1] 生命+%d\n[2] 攻击+4\n[3] 防御+4\n[4] 魔防+10\n[ESC] 离开", need, hpadd);
+			showMessage(s);
+		}
 	}
 	if (consts.msg==consts.MESSAGE_NPC) {
 		c_map_npc* npc=map_floor[hero.getNowFloor()].getinfo(hero.nextY(),hero.nextX())->getNpc();
 		int id=npc->getId(), times=npc->getVisit();
 
-		// 6楼商店
+		// 商店
 		if (id==41) {
 			int need=20+2*times, hpadd=100+5*times;
 			wchar_t s[200];
 			wsprintf(s, L"贪婪之神\t勇敢的武士啊，给我%d金币就可以：\n\n[1] 生命+%d\n[2] 攻击+2\n[3] 防御+2\n[4] 魔防+5\n[ESC] 离开", need, hpadd);
+			showMessage(s);
+		}
+		if (id==42) {
+			int need=40+4*times, hpadd=200+10*times;
+			wchar_t s[200];
+			wsprintf(s, L"贪婪之神\t勇敢的武士啊，给我%d金币就可以：\n\n[1] 生命+%d\n[2] 攻击+4\n[3] 防御+4\n[4] 魔防+10\n[ESC] 离开", need, hpadd);
 			showMessage(s);
 		}
 		// 7楼奸商
