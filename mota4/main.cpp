@@ -588,7 +588,7 @@ bool renderFunc()
 		float height=consts.map_height*32*0.6;
 		f->Print(left, height-36, L"请选择难度：");
 		f->SetColor(0xFF00FF00);
-		f->Print(left, height, L"[1] 简单（减伤8%%）");
+		f->Print(left, height, L"[1] 简单（减伤10%%）");
 		//f->SetColor(0xFF96CDCD);
 		f->SetColor(0xFF1C86EE);
 		f->Print(left, height+32, L"[2] 普通（减伤4%%）");

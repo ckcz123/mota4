@@ -295,7 +295,7 @@ int c_hero::getDamage(int hero_atk, int hero_def, int hero_mdef,
 	ans -= hero_mdef;
 
 	if (ans<=0) ans=0;
-	if (consts.hard==1) ans=(int)(ans*0.92);
+	if (consts.hard==1) ans=(int)(ans*0.9);
 	if (consts.hard==2) ans=(int)(ans*0.96);
 	return ans;
 }
@@ -381,6 +381,19 @@ void c_hero::beat(c_monster* monster)
 	{
 		map_floor[now_floor].getinfo(3,10)->openSpecial();
 	}
+	if (now_floor==13 && id==27 && !map_floor[now_floor].getinfo(1,7)->hasMonster() && !map_floor[now_floor].getinfo(3,7)->hasMonster())
+	{
+		map_floor[now_floor].getinfo(2,8)->openSpecial();
+	}
+	if (now_floor==14 && id==27 && !map_floor[now_floor].getinfo(4,9)->hasMonster() && !map_floor[now_floor].getinfo(6,9)->hasMonster())
+	{
+		map_floor[now_floor].getinfo(5,8)->openSpecial();
+	}
+	if (now_floor==15 && id==26)
+	{
+		map_floor[now_floor].getinfo(9,6)->openSpecial();
+		consts.upload();
+	}
 
 	consts.lasttime=clock();
 }
@@ -399,6 +412,18 @@ void c_hero::shop(int select)
 		consts.map_npc->visitNpc();
 		return;
 	}
+	if (npcid==42) {
+		int need=40+4*npctime, hpadd=200+10*npctime;
+		if (money<need) return;
+		money-=need;
+		if (select==1) hp+=hpadd;
+		if (select==2) atk+=4;
+		if (select==3) def+=4;
+		if (select==4) mdef+=10;
+		consts.map_npc->visitNpc();
+		return;
+	}
+
 
 }
 void c_hero::npc(int select)
@@ -435,7 +460,12 @@ void c_hero::npc(int select)
 		}
 	case 43:
 		{
-			consts.setMsg(L"游戏提示\t本塔快捷键说明：\n\nS/L: 存/读档\nK: 读取自动存档\nP: 查看当前MAX\nZ: 转向\nR: 重新开始\n-: 开启/关闭地图显伤\nM: 音乐开关");
+			const wchar_t* ss[50]={
+				L"游戏提示\t本塔快捷键说明：\n\nS/L: 存/读档\nK: 读取自动存档\nP: 查看当前MAX\nZ: 转向\nR: 重新开始\n-: 开启/关闭地图显伤\nM: 音乐开关",
+				L"游戏提示\t本塔共四个区，每5层一个小Boss。\n\n困难难度下作者测试数据：\n一区：97\n二区：90\n三区：213\n\n亲民游戏，绝不卡血；希望各位血海\n大佬狠狠蹂躏之！",
+				L"游戏提示\t本塔由艾之葵使用C++制作，如有问\n题请于发布帖下进行反馈，小艾在此\n感谢大家的支持！\n\n祝大家游戏愉快~"
+			};
+			consts.setMsg(ss);
 			break;
 		}
 	case 44:
