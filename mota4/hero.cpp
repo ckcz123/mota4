@@ -381,7 +381,7 @@ void c_hero::beat(c_monster* monster)
 	{
 		map_floor[now_floor].getinfo(3,10)->openSpecial();
 	}
-	if (now_floor==13 && id==27 && !map_floor[now_floor].getinfo(1,7)->hasMonster() && !map_floor[now_floor].getinfo(3,7)->hasMonster())
+	if (now_floor==13 && (id==25 || id==27) && !map_floor[now_floor].getinfo(1,7)->hasMonster() && !map_floor[now_floor].getinfo(3,7)->hasMonster())
 	{
 		map_floor[now_floor].getinfo(2,8)->openSpecial();
 	}
@@ -482,6 +482,9 @@ void c_hero::npc(int select)
 		break;
 	case 46:
 		consts.setMsg(L"游戏提示\t本区域怪物伤害较高，请尽快开启12\n楼的商店。\n\n该商店按[I]键可快捷使用。");
+		break;
+	case 47:
+		consts.setMsg(L"游戏提示\t13-15F存在三条完全不同的路线，它\n们的差距不大且都能最终打掉本区域\n的Boss，但有一条相对略优一筹，你\n能找到它吗？");
 		break;
 	default:
 		consts.setMsg(L"勇士\t这是啥？");
