@@ -26,7 +26,7 @@ void c_monster::init(int t)
 	case 8:wcscpy_s(name,L"冥灵魔王");position=7;hp=700;atk=286;def=120;money=27;break;
 	case 9:wcscpy_s(name,L"初级法师");position=8;hp=150;atk=52;def=0;money=4;special=2;break;
 	case 10:wcscpy_s(name,L"高级法师");position=9;hp=316;atk=125;def=30;money=16;special=2;break;
-	case 11:wcscpy_s(name,L"初级巫师");position=10;hp=400;atk=200;def=0;money=38;special=2;break;
+	case 11:wcscpy_s(name,L"初级巫师");position=10;hp=500;atk=358;def=222;money=44;special=2;break;
 	case 12:wcscpy_s(name,L"高级巫师");position=11;hp=700;atk=350;def=0;money=40;special=2;break;
 	case 13:wcscpy_s(name,L"骷髅人");position=12;hp=223;atk=44;def=3;money=5;break;
 	case 14:wcscpy_s(name,L"骷髅士兵");position=13;hp=343;atk=58;def=10;money=8;break;
@@ -45,17 +45,17 @@ void c_monster::init(int t)
 	case 27:wcscpy_s(name,L"金骑士");position=26;hp=786;atk=282;def=179;money=38;break;
 	case 28:wcscpy_s(name,L"灵武士");position=27;hp=988;atk=673;def=235;money=50;break;
 	case 29:wcscpy_s(name,L"红衣魔王");position=28;hp=0;atk=0;def=0;money=0;break;
-	case 30:wcscpy_s(name,L"白衣武士");position=29;hp=735;atk=652;def=100;money=42;break;
+	case 30:wcscpy_s(name,L"白衣武士");position=29;hp=766;atk=544;def=162;money=46;break;
 	case 31:wcscpy_s(name,L"灵法师");position=30;hp=0;atk=0;def=0;money=0;break;
 	case 32:wcscpy_s(name,L"黄头怪");position=31;hp=0;atk=0;def=0;money=0;break;
-	case 33:wcscpy_s(name,L"紫骷髅");position=32;hp=0;atk=0;def=0;money=0;break;
+	case 33:wcscpy_s(name,L"紫骷髅");position=32;hp=550;atk=370;def=250;money=42;break;
 	case 34:wcscpy_s(name,L"紫蝙蝠");position=33;hp=0;atk=0;def=0;money=0;break;
-	case 35:wcscpy_s(name,L"铁面人");position=34;hp=0;atk=0;def=0;money=0;break;
-	case 36:wcscpy_s(name,L"绿兽人");position=35;hp=0;atk=0;def=0;money=0;break;
+	case 35:wcscpy_s(name,L"铁面人");position=34;hp=130;atk=260;def=0;money=48;special=3;break;
+	case 36:wcscpy_s(name,L"绿兽人");position=35;hp=660;atk=443;def=210;money=43;break;
 	case 37:wcscpy_s(name,L"黑衣魔王");position=36;hp=0;atk=0;def=0;money=0;break;
 	case 38:wcscpy_s(name,L"黄衣魔王");position=37;hp=0;atk=0;def=0;money=0;break;
 	case 39:wcscpy_s(name,L"青衣武士");position=38;hp=0;atk=0;def=0;money=0;break;
-	case 40:wcscpy_s(name,L"近卫骑士");position=39;hp=0;atk=0;def=0;money=0;break;
+	case 40:wcscpy_s(name,L"近卫骑士");position=39;hp=400;atk=375;def=350;money=49;break;
 	default:position=-1;
 	}
 	if (position!=-1)

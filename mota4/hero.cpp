@@ -126,11 +126,11 @@ bool c_hero::moveComplete()
 			def+=20;
 			consts.setMsg(L"获得银盾，防御+20。");
 			break;
-		case 31:
+		case 28:
 			atk+=40;
 			consts.setMsg(L"获得神圣剑，攻击+40。");
 			break;
-		case 32:
+		case 29:
 			def+=40;
 			consts.setMsg(L"获得神圣盾，防御+40。");
 			break;
@@ -394,6 +394,10 @@ void c_hero::beat(c_monster* monster)
 		map_floor[now_floor].getinfo(9,6)->openSpecial();
 		consts.upload();
 	}
+	if (now_floor==17 && id==40 && !map_floor[now_floor].getinfo(7,5)->hasMonster() && !map_floor[now_floor].getinfo(7,7)->hasMonster())
+	{
+		map_floor[now_floor].getinfo(8,6)->openSpecial();
+	}
 
 	consts.lasttime=clock();
 }
@@ -485,6 +489,12 @@ void c_hero::npc(int select)
 		break;
 	case 47:
 		consts.setMsg(L"游戏提示\t13-15F存在三条完全不同的路线，它\n们的差距不大且都能最终打掉本区域\n的Boss，但有一条相对略优一筹，你\n能找到它吗？");
+		break;
+	case 48:
+		consts.setMsg(L"游戏提示\t最后一个区了，加油！");
+		break;
+	case 49:
+		consts.setMsg(L"游戏提示\t下面的神圣剑和神圣盾只能拿一个。");
 		break;
 	default:
 		consts.setMsg(L"勇士\t这是啥？");

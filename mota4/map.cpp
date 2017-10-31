@@ -143,12 +143,7 @@ hgeSprite* c_map_point::getItemSprite() {
 	case 26:return consts.s_sword2;break;
 	case 27:return consts.s_shield2;break;
 	case 28:return consts.s_sword3;break;
-	case 30:return consts.s_shield3;break;
-	case 31:return consts.s_sword3;break;
-	case 32:return consts.s_shield3;break;
-	case 33:return consts.s_atk;break;
-	case 34:return consts.s_def;break;
-	case 35:return consts.s_life;break;
+	case 29:return consts.s_shield3;break;
 	}
 	return NULL;
 }
