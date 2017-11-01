@@ -19,7 +19,7 @@ public:
 	void downstair();//下楼
 	void turn(); // 转向
 	void fly(); //楼层飞跃
-	void specialMove() {}
+	void specialMove();
 	void show();
 	void printInfo();//输出勇士信息
 	bool canBeat(c_monster*);//能否打败怪物

@@ -795,13 +795,13 @@ bool renderFunc()
 		int id=consts.map_npc->getId(), times=consts.map_npc->getVisit();
 		// 6楼商店
 		if (id==41) {
-			int need=20+2*times, hpadd=100+5*times;
+			int need=20+2*times, hpadd=100+3*times;
 			wchar_t s[200];
 			wsprintf(s, L"贪婪之神\t勇敢的武士啊，给我%d金币就可以：\n\n[1] 生命+%d\n[2] 攻击+2\n[3] 防御+2\n[4] 魔防+5\n[ESC] 离开", need, hpadd);
 			showMessage(s);
 		}
 		if (id==42) {
-			int need=40+4*times, hpadd=200+10*times;
+			int need=40+4*times, hpadd=200+6*times;
 			wchar_t s[200];
 			wsprintf(s, L"贪婪之神\t勇敢的武士啊，给我%d金币就可以：\n\n[1] 生命+%d\n[2] 攻击+4\n[3] 防御+4\n[4] 魔防+10\n[ESC] 离开", need, hpadd);
 			showMessage(s);
@@ -813,13 +813,13 @@ bool renderFunc()
 
 		// 商店
 		if (id==41) {
-			int need=20+2*times, hpadd=100+5*times;
+			int need=20+2*times, hpadd=100+3*times;
 			wchar_t s[200];
 			wsprintf(s, L"贪婪之神\t勇敢的武士啊，给我%d金币就可以：\n\n[1] 生命+%d\n[2] 攻击+2\n[3] 防御+2\n[4] 魔防+5\n[ESC] 离开", need, hpadd);
 			showMessage(s);
 		}
 		if (id==42) {
-			int need=40+4*times, hpadd=200+10*times;
+			int need=40+4*times, hpadd=200+6*times;
 			wchar_t s[200];
 			wsprintf(s, L"贪婪之神\t勇敢的武士啊，给我%d金币就可以：\n\n[1] 生命+%d\n[2] 攻击+4\n[3] 防御+4\n[4] 魔防+10\n[ESC] 离开", need, hpadd);
 			showMessage(s);

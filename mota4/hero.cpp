@@ -207,6 +207,15 @@ void c_hero::downstair()
 	consts.flooring=true;
 	consts.step++;
 }
+void c_hero::specialMove()
+{
+	now_floor=20;
+	setFlyFloor();
+	x=6;y=7;
+	face=3;
+	consts.flooring=true;
+	consts.step++;
+}
 void c_hero::turn()
 {
 	if (face==0) face=2;
@@ -399,6 +408,13 @@ void c_hero::beat(c_monster* monster)
 		map_floor[now_floor].getinfo(8,6)->openSpecial();
 	}
 
+	if (now_floor==20 && id==37)
+	{
+		consts.ending=1;
+		consts.msg=consts.MESSAGE_WIN;
+		consts.upload();
+	}
+
 	consts.lasttime=clock();
 }
 void c_hero::shop(int select)
@@ -406,7 +422,7 @@ void c_hero::shop(int select)
 	int npcid=consts.map_npc->getId();
 	int npctime=consts.map_npc->getVisit();
 	if (npcid==41) {
-		int need=20+2*npctime, hpadd=100+5*npctime;
+		int need=20+2*npctime, hpadd=100+3*npctime;
 		if (money<need) return;
 		money-=need;
 		if (select==1) hp+=hpadd;
@@ -417,7 +433,7 @@ void c_hero::shop(int select)
 		return;
 	}
 	if (npcid==42) {
-		int need=40+4*npctime, hpadd=200+10*npctime;
+		int need=40+4*npctime, hpadd=200+6*npctime;
 		if (money<need) return;
 		money-=need;
 		if (select==1) hp+=hpadd;
@@ -440,7 +456,7 @@ void c_hero::npc(int select)
 	{
 	case 41:
 		{
-			int need=20+2*npctime, hpadd=100+5*npctime;
+			int need=20+2*npctime, hpadd=100+3*npctime;
 			if (money<need) break;
 			money-=need;
 			if (select==1) hp+=hpadd;
@@ -452,7 +468,7 @@ void c_hero::npc(int select)
 		}
 	case 42:
 		{
-			int need=40+4*npctime, hpadd=200+10*npctime;
+			int need=40+4*npctime, hpadd=200+6*npctime;
 			if (money<need) break;
 			money-=need;
 			if (select==1) hp+=hpadd;
@@ -466,7 +482,6 @@ void c_hero::npc(int select)
 		{
 			const wchar_t* ss[50]={
 				L"游戏提示\t本塔快捷键说明：\n\nS/L: 存/读档\nK: 读取自动存档\nP: 查看当前MAX\nZ: 转向\nR: 重新开始\n-: 开启/关闭地图显伤\nM: 音乐开关",
-				L"游戏提示\t本塔共四个区，每5层一个小Boss。\n\n困难难度下作者测试数据：\n一区：97\n二区：78\n三区：83\n\n亲民游戏，绝不卡血；希望各位血海\n大佬狠狠蹂躏之！",
 				L"游戏提示\t本塔由艾之葵使用C++制作，如有问\n题请于发布帖下进行反馈，小艾在此\n感谢大家的支持！\n\n祝大家游戏愉快~"
 			};
 			consts.setMsg(ss);
@@ -494,7 +509,7 @@ void c_hero::npc(int select)
 		consts.setMsg(L"游戏提示\t最后一个区了，加油！");
 		break;
 	case 49:
-		consts.setMsg(L"游戏提示\t下面的神圣剑和神圣盾只能拿一个。");
+		consts.setMsg(L"游戏提示\t下面的神圣剑和盾你只能选择一个。\n\n不管拿哪个都是可以通关的，你能分\n别找到剑路线和盾路线的MAX吗？");
 		break;
 	default:
 		consts.setMsg(L"勇士\t这是啥？");

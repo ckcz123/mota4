@@ -20,7 +20,7 @@ constants::constants()
 	shouldUpload=true;
 	wanttosave=0;
 	lastload=-1000;
-	shouldUpload=false;
+	// shouldUpload=false;
 }
 
 void constants::init()
@@ -119,7 +119,7 @@ void constants::loadResources()
 	s_down=new hgeSprite(ht_special,32,928,32,32);
 	s_left=new hgeSprite(ht_special,64,928,32,32);
 	s_right=new hgeSprite(ht_special,96,928,32,32);
-	s_portal=new hgeSprite(ht_special,192,928,32,32);
+	s_portal=new hgeSprite(ht_special,160,960,32,32);
 	s_flower=new hgeSprite(ht_special,224,736,32,32);
 	s_box=new hgeSprite(ht_special,192,768,32,32);
 	s_boxed=new hgeSprite(ht_special,224,768,32,32);
